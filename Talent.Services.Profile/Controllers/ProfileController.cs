@@ -1,25 +1,21 @@
-﻿using Talent.Common.Contracts;
-using Talent.Common.Models;
-using Talent.Common.Security;
-using Talent.Services.Profile.Models.Profile;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
+using MongoDB.Driver;
 using RawRabbit;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using MongoDB.Driver;
-using Talent.Services.Profile.Domain.Contracts;
 using Talent.Common.Aws;
+using Talent.Common.Contracts;
+using Talent.Common.Models;
+using Talent.Common.Security;
+using Talent.Services.Profile.Domain.Contracts;
 using Talent.Services.Profile.Models;
+using Talent.Services.Profile.Models.Profile;
 
 namespace Talent.Services.Profile.Controllers
 {
@@ -137,16 +133,39 @@ namespace Talent.Services.Profile.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<IActionResult> GetLanguages()
         {
-            //Your code here;
+            //try
+            // {
+            //var userId = _userAppContext.CurrentUserId;
+
             throw new NotImplementedException();
+            //var talentResult = await _profileService.GetTalentProfile(userId);
+
+            //return Json(new { Success = true, talent = talentResult });
+            //}
+            //catch (Exception e)
+            //{
+            //return Json(new { Success = false, message = e });
+            //}
         }
 
         [HttpPost("addLanguage")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public ActionResult AddLanguage([FromBody] AddLanguageViewModel language)
         {
-            //Your code here;
+            //try
+            //{
+            //if (_profileService.AddNewLanguage(language))
+            //{
+            // return Json(new { Success = true });
+            //}
             throw new NotImplementedException();
+            //}
+            //catch (Exception e)
+            //{
+            //return Json(new { Success = false, e.Message });
+            //}
+            //return Json(new { Success = false });
+
         }
 
         [HttpPost("updateLanguage")]
@@ -242,8 +261,22 @@ namespace Talent.Services.Profile.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<ActionResult> UpdateProfilePhoto()
         {
+
             //Your code here;
-            throw new NotImplementedException();
+            try
+            {
+
+                var IFormFile = Request.Form.Files[0];
+                string talentId = _userAppContext.CurrentUserId;
+
+                var result = await _profileService.UpdateTalentPhoto(talentId, IFormFile);
+                return Json(new { Success = true, Data = result });
+            }
+            catch (MongoException e)
+            {
+                return Json(new { Success = false, e.Message });
+            }
+
         }
 
         [HttpPost("updateTalentCV")]
@@ -313,7 +346,7 @@ namespace Talent.Services.Profile.Controllers
             throw new NotImplementedException();
         }
 
-     
+
         #endregion
 
         #region EmployerOrRecruiter
@@ -358,7 +391,7 @@ namespace Talent.Services.Profile.Controllers
             if (ModelState.IsValid)
             {
                 //check if employer is client 5be40d789b9e1231cc0dc51b
-                var recruiterClients =(await _recruiterRepository.GetByIdAsync(_userAppContext.CurrentUserId)).Clients;
+                var recruiterClients = (await _recruiterRepository.GetByIdAsync(_userAppContext.CurrentUserId)).Clients;
 
                 if (recruiterClients.Select(x => x.EmployerId == employer.Id).FirstOrDefault())
                 {
@@ -379,6 +412,7 @@ namespace Talent.Services.Profile.Controllers
             //Your code here;
             throw new NotImplementedException();
         }
+
 
         [HttpPost("updateEmployerVideo")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "employer, recruiter")]
@@ -403,7 +437,7 @@ namespace Talent.Services.Profile.Controllers
             //Your code here;
             throw new NotImplementedException();
         }
-        
+
         #endregion
 
         #region TalentFeed
@@ -414,7 +448,7 @@ namespace Talent.Services.Profile.Controllers
         {
             String talentId = String.IsNullOrWhiteSpace(id) ? _userAppContext.CurrentUserId : id;
             var userProfile = await _profileService.GetTalentProfile(talentId);
-          
+
             return Json(new { Success = true, data = userProfile });
         }
 
@@ -575,11 +609,11 @@ namespace Talent.Services.Profile.Controllers
         {
             try
             {
-                var result=await _profileService.GetClientListAsync(_userAppContext.CurrentUserId);
+                var result = await _profileService.GetClientListAsync(_userAppContext.CurrentUserId);
 
                 return Json(new { Success = true, result });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Json(new { Success = false, e.Message });
             }

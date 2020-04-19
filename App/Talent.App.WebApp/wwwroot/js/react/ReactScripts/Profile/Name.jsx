@@ -20,7 +20,7 @@ export class Name extends React.Component {
             characters: name.length
         })
     }
-    
+
     render() {
         const characterLimit = 80
         let characters = this.props.name ? this.props.name.length : 0;
