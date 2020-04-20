@@ -7,8 +7,8 @@ export default class Language extends React.Component {
         super(props);
 
         this.state = {
-            index: -1,
             isLoaded: false,
+            indexToEdit: -1,
             showAddSection: false,
 
             languages: [{
@@ -33,14 +33,14 @@ export default class Language extends React.Component {
 
     }
     componentDidMount() {
-       
+
     }
     AddLanguage(e) {
         e.preventDefault();
         this.setState({
             showAddSection: true,
             languages: {}
-            
+
         })
     }
 
@@ -50,7 +50,7 @@ export default class Language extends React.Component {
         var level = oldlanguages[index].level;
 
         this.setState({
-            index: index,
+            indexToEdit: index,
             Name: name,
             Level: level
 
@@ -60,11 +60,9 @@ export default class Language extends React.Component {
     cancel() {
         this.setState({
             showAddSection: false,
-            index: -1
+            indexToEdit: -1
         });
     }
-
-
 
     handleChange(event) {
 
@@ -116,10 +114,9 @@ export default class Language extends React.Component {
 
 
 
-    delete(languageId) {
+    delete(languageToDelete) {
 
-        
-        const languageData = this.props.languageData.filter(language => language.id !== languageId);
+        const languageData = this.props.languageData.filter(language => language.id != languageToDelete.id);
 
         var updateData = {
             languages: languageData
@@ -137,24 +134,24 @@ export default class Language extends React.Component {
                     <Table striped>
                         <Table.Body>
                             <Table.Row>
-                               <Table.Cell><input type="text" name="name" value={this.state.languages.name || ""}
-                                       onChange={this.handleChange} placeholder="Language" />
-                               </Table.Cell>
+                                <Table.Cell><input type="text" name="name" value={this.state.languages.name || ""}
+                                    onChange={this.handleChange} placeholder="Language" />
+                                </Table.Cell>
 
                                 <Table.Cell>
                                     <select name="level" value={this.state.languages.level || ""}
-                                            onChange={this.handleChange} className="ui fluid dropdown">
-                                          <option value="languageLevel">languageLevel</option>
-                                          <option value="Basic">Basic</option>
-                                          <option value="Conversational">Conversational</option>
-                                          <option value="Fluent">Fluent</option>
-                                          <option value="Native">Native</option>
+                                        onChange={this.handleChange} className="ui fluid dropdown">
+                                        <option value="languageLevel">languageLevel</option>
+                                        <option value="Basic">Basic</option>
+                                        <option value="Conversational">Conversational</option>
+                                        <option value="Fluent">Fluent</option>
+                                        <option value="Native">Native</option>
                                     </select>
                                 </Table.Cell>
 
                                 <Table.Cell>
-                                     <button type="button" className="ui teal button" onClick={this.saveAdd}>Save</button>
-                                     <button type="button" className="ui red button" onClick={this.cancel}>Cancel</button>
+                                    <button type="button" className="ui teal button" onClick={this.saveAdd}>Save</button>
+                                    <button type="button" className="ui red button" onClick={this.cancel}>Cancel</button>
                                 </Table.Cell>
                             </Table.Row>
                         </Table.Body>
@@ -182,17 +179,17 @@ export default class Language extends React.Component {
                 <option value="Conversational">Conversational</option>
                 <option value="Fluent">Fluent</option>
                 <option value="Native">Native</option>
-                
+
             </select>)
 
         const editbutton = index => (<button type="button" className="ui teal button "
             onClick={() => this.saveEdit(index)}>Save
-                                     </button>)
+        </button>)
 
         const cancelbutton = (<button type="button" className="ui red button "
             onClick={this.cancel}>Cancel
         </button>)
-        
+        const deletebutton = language => (<i className="close icon" onClick={() => this.delete(language)}></i>);
 
         return (
 
@@ -213,16 +210,16 @@ export default class Language extends React.Component {
                         </Table.Header>
 
                         <Table.Body className="helo">
-                            {this.props.languageData.map((lang,index) => (
+                            {this.props.languageData.map((lang, index) => (
                                 <Table.Row key={index}>
-                                    <Table.Cell>{this.props.languageData.indexOf(lang) == this.state.index ? editname : lang.name}</Table.Cell>
-                                    <Table.Cell>{this.props.languageData.indexOf(lang) == this.state.index ? editlevel : lang.level}</Table.Cell>
+                                    <Table.Cell>{this.props.languageData.indexOf(lang) == this.state.indexToEdit ? editname : lang.name}</Table.Cell>
+                                    <Table.Cell>{this.props.languageData.indexOf(lang) == this.state.indexToEdit ? editlevel : lang.level}</Table.Cell>
                                     <Table.Cell>
-                                        {this.props.languageData.indexOf(lang) == this.state.index ? editbutton(this.props.languageData.indexOf(lang)) :
+                                        {this.props.languageData.indexOf(lang) == this.state.indexToEdit ? editbutton(this.props.languageData.indexOf(lang)) :
                                             <i className="pencil alternate icon" onClick={() => this.editLanguage(this.props.languageData.indexOf(lang))}>
                                             </i>}
-                                        {this.props.languageData.indexOf(lang) == this.state.index ? cancelbutton :
-                                            <i className="close icon" onClick={() => this.delete(lang.id)}></i>}
+                                        {this.props.languageData.indexOf(lang) == this.state.indexToEdit ? cancelbutton :
+                                           deletebutton(lang) }
                                     </Table.Cell>
                                 </Table.Row>
                             ))}
@@ -232,6 +229,5 @@ export default class Language extends React.Component {
             </Container >
         )
     }
-
-
 }
+

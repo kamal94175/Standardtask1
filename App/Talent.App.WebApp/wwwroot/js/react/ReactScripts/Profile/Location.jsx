@@ -2,6 +2,7 @@
 import Cookies from 'js-cookie'
 import { default as Countries } from '../../../../util/jsonFiles/countries.json';
 import { ChildSingleInput } from '../Form/SingleInput.jsx';
+
 export class Address extends React.Component {
     constructor(props) {
         super(props)
@@ -20,7 +21,10 @@ export class Address extends React.Component {
 
         this.state = {
             showEditSection: false,
-            newAddress: addressData
+            newAddress: addressData,
+            countryId: null,
+            cityId: null
+
         }
 
         this.openEdit = this.openEdit.bind(this)
@@ -52,7 +56,12 @@ export class Address extends React.Component {
     handleChange(event) {
         
         const data = Object.assign({}, this.state.newAddress)
-        data[event.target.name] = event.target.value
+        const name = event.target.name;
+        let value = event.target.value;
+        data[name] = value
+        if (name == "country") {
+            data["city"] = "";
+        }
         this.setState({
             newAddress: data
         })
@@ -69,6 +78,13 @@ export class Address extends React.Component {
 
 
         this.closeEdit()
+    }
+    onSelectCountry(countId) {
+        const selCities = this.props.addressData.city.filter(c => c.countryId === countId);
+        this.setState({
+            countryId: countId,
+            city: selCities
+        });
     }
 
     render() {
@@ -89,7 +105,7 @@ export class Address extends React.Component {
             CitiesOptions = Countries[selectedCountry].map((y, index) => <option key={index} value={y.selectedCity} > {y}</option>);
         }
         else if (selectedCity == "" && selectedCity == null) {
-            CitiesOptions == null;
+            CountriesOptions == null;
         }
         else {
             null;
@@ -180,8 +196,8 @@ export class Address extends React.Component {
 
         let Address = this.props.addressData ? `${this.props.addressData.number}, ${this.props.addressData.street}, ${this.props.addressData.suburb}, ${this.props.addressData.
             postCode}` : ""
-        let City = this.props.addressData ? this.props.addressData.city : ""
-        let Country = this.props.addressData ? this.props.addressData.country : ""
+        let City = this.props.addressData ? this.props.addressData.city : null
+        let Country = this.props.addressData ? this.props.addressData.country : null
 
         return (
             <div className='row'>
