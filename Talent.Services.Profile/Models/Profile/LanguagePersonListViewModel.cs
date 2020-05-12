@@ -5,6 +5,7 @@ using System.Web;
 
 namespace Talent.Services.Profile.Models.Profile
 {
+    //[BsonIgnoreExtraElements]
     public class LanguagePersonListViewModel
     {
         public string PersonLanguageId { get; set; }

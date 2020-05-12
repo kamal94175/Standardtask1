@@ -10,6 +10,7 @@ namespace Talent.Services.Profile.Models.Profile
     {
         
     }
+    //[BsonIgnoreExtraElements]
     public class AddEducationViewModel
     {
         [Required]

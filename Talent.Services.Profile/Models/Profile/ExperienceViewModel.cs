@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Talent.Services.Profile.Models.Profile
 {
+    //[BsonIgnoreExtraElements]
     public class ExperienceViewModel
     {
         public String Id { get; set; }

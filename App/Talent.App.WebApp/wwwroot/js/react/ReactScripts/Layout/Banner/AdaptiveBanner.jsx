@@ -40,7 +40,7 @@ export default class AdaptiveBanner extends React.Component {
 
     isUserAuthenticated() {
         var cookies = Cookies.get('talentAuthToken')
-        $.ajax({
+         $.ajax({
             url: 'http://localhost:60290/profile/profile/isUserAuthenticated',
             headers: {
                 'Authorization': 'Bearer ' + cookies,
@@ -56,7 +56,7 @@ export default class AdaptiveBanner extends React.Component {
                         userRole:res.type
                     })
                 }
-                else {
+                 else {
                     this.setState({
                         username: '',
                         loggedIn: false,

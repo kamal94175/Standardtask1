@@ -72,6 +72,7 @@ export class IndividualDetailSection extends Component {
                     label="First Name"
                     name="firstName"
                     value={this.state.newContact.firstName}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter your first name"
@@ -82,6 +83,7 @@ export class IndividualDetailSection extends Component {
                     label="Last Name"
                     name="lastName"
                     value={this.state.newContact.lastName}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter your last name"
@@ -92,6 +94,7 @@ export class IndividualDetailSection extends Component {
                     label="Email address"
                     name="email"
                     value={this.state.newContact.email}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter an email"
@@ -103,6 +106,7 @@ export class IndividualDetailSection extends Component {
                     label="Phone number"
                     name="phone"
                     value={this.state.newContact.phone}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={12}
                     placeholder="Enter a phone number"
@@ -209,6 +213,7 @@ export class CompanyDetailSection extends Component {
                     label="Name"
                     name="name"
                     value={this.state.newContact.name}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter your last name"
@@ -219,6 +224,7 @@ export class CompanyDetailSection extends Component {
                     label="Email address"
                     name="email"
                     value={this.state.newContact.email}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter an email"
@@ -230,6 +236,7 @@ export class CompanyDetailSection extends Component {
                     label="Phone number"
                     name="phone"
                     value={this.state.newContact.phone}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={12}
                     placeholder="Enter a phone number"

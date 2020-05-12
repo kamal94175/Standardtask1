@@ -4,9 +4,11 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Talent.Common.Models
 {
+    [BsonIgnoreExtraElements]
     public class UserSkill : IMongoCommon
     {
         public bool IsDeleted { get; set; }
@@ -15,7 +17,9 @@ namespace Talent.Common.Models
         public string Id { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string UserId { get; set; }
+        [Required]
         public string Skill { get; set; }
+        [Required]
         public string ExperienceLevel { get; set; }
     }
 }

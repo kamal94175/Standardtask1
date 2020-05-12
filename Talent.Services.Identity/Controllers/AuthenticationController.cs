@@ -73,9 +73,11 @@ namespace Talent.Services.Identity.Controllers
                 var authenticateUser = await _authenticationService.LoginAsync(command.Email, command.Password);
 
                 if (!await _authenticationService.IsEmailVerified(command.Email, authenticateUser.UserRole))
+                
                     return Json(new { IsSuccess = true, isEmailVerified = false, Message = "Please Verifiy Your Email" });
-
-                return Json(new { IsSuccess = true, isEmailVerified = true, Token = authenticateUser });
+                
+                    return Json(new { IsSuccess = true, isEmailVerified = true, Token = authenticateUser });
+                
             }
             catch (ApplicationException e)
             {

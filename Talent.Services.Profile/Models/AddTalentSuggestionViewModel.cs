@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Talent.Services.Profile.Models
 {
+    //[BsonIgnoreExtraElements]
     public class AddTalentSuggestion
     {
         public string TalentId { get; set; }

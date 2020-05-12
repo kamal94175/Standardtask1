@@ -73,7 +73,7 @@ export default class PhotoUpload extends Component {
         if (file == "") {
             document.getElementById('showhide').style.display = 'none';
         } else {
-            document.getElementById('showhide').style.display = 'inline';
+            document.getElementById('showhide').style.display = 'inline';   
         }
 
     }

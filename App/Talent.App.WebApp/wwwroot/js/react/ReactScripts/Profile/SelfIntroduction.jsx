@@ -37,14 +37,20 @@ export default class SelfIntroduction extends React.Component {
     saveContact() {
         console.log(this.state.item)
         const data = Object.assign({}, this.state.item)
-        //data[event.target.name] = event.target.value;
-        this.props.updateProfileData(data)
+        //const { description } = this.state.item;
+
+        if (this.state.item.description.length < 150) {
+            TalentUtil.notification.show("Profile did not update successfully", "error", null, null)
+        } else {
+            //data[event.target.name] = event.target.value;
+            this.props.updateProfileData(data)
+        }
         
     }
 
     render() {
 
-        const characterLimit = 600;
+        
         return (
             <React.Fragment>
                 <div className="ui sixteen wide column">
@@ -55,9 +61,10 @@ export default class SelfIntroduction extends React.Component {
                     </div>
                 </div>
                 <span>Summary must be no more than 150 characters</span>
+
                 <div className="ui sixteen wide column">
                     <div className="field" >
-                        <textarea maxLength={characterLimit} name="description"
+                        <textarea minLength={150} maxLength={600} name="description"
                             placeholder="Please tell us about any hobbies, additional expertise, or anything else you’d like to add."
                             value={this.props.description} onChange={this.handleChangeDescription} ></textarea>
                     </div>

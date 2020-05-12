@@ -63,6 +63,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
                     label="linkedIn"
                     name="linkedIn"
                     value={this.state.newAccounts.linkedIn}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter your Linkedin Url"
@@ -73,6 +74,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
                     label="github"
                     name="github"
                     value={this.state.newAccounts.github}
+                    onChange={this.props.controlFunc}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter your Github Url"

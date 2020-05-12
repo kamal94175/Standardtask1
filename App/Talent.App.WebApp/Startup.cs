@@ -31,14 +31,17 @@ namespace Talent.App.WebApp
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
+                
             }
             else
             {
+                
                 app.UseExceptionHandler("/Home/Error");
+                
             }
 
             app.UseStaticFiles();
-
+            //app.UseCors(builder => builder.WithOrigins(" http://localhost:61771").AllowAnyHeader());
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

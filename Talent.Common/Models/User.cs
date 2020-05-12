@@ -6,24 +6,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Talent.Common.Models
 {
+    [BsonIgnoreExtraElements]
     public class User : IMongoCommon
     {
         public Guid UId { get; set; }
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string UserId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public string Gender { get; set; }
-
         public string Email { get; set; }
         public string Phone { get; set; }
         public string MobilePhone { get; set; }
         public bool IsMobilePhoneVerified { get; set; }
-
         public Address Address { get; set; }
         public string Nationality { get; set; }
         public string VisaStatus { get; set; }
@@ -31,7 +33,7 @@ namespace Talent.Common.Models
         public DateTime? VisaExpiryDate { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
-
+        
         public List<UserLanguage> Languages { get; set; }
         public List<UserSkill> Skills { get; set; }
         public List<UserEducation> Education { get; set; }
@@ -63,7 +65,7 @@ namespace Talent.Common.Models
             LinkedAccounts = new LinkedAccounts();
         }
     }
-
+    [BsonIgnoreExtraElements]
     public class Address
     {
         public string Number { get; set; }
@@ -83,7 +85,7 @@ namespace Talent.Common.Models
             Country = "";
         }
     }
-
+    [BsonIgnoreExtraElements]
     public class LinkedAccounts
     {
         public string LinkedIn { get; set; }
@@ -95,7 +97,7 @@ namespace Talent.Common.Models
             Github = "";
         }
     }
-
+    [BsonIgnoreExtraElements]
     public class JobSeekingStatus
     {
         public string Status { get; set; }

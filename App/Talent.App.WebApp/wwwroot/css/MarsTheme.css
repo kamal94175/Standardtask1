@@ -656,6 +656,7 @@ div.ReactTags__selected a.ReactTags__remove {
 
 .react-datepicker-wrapper {
     display: inline-block;
+    float: left;
 }
 
 .react-datepicker {
@@ -1540,6 +1541,10 @@ select.w-auto {
     position: relative;
     float: right;
     margin-top: 0.4%;
+
+}
+select.ui.dropdown{
+    float: left;
 }
 /*#expiry{
     position: relative;

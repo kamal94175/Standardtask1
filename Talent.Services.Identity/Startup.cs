@@ -31,7 +31,7 @@ namespace Talent.Services.Identity
         }
 
         public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -78,7 +78,9 @@ namespace Talent.Services.Identity
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
+            //app.UseCors(builder => builder.WithOrigins(" http://localhost:61771").AllowAnyHeader());
             app.UseCors("AllowWebApp");
             app.UseMvc();
         }

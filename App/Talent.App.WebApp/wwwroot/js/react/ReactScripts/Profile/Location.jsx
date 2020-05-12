@@ -118,6 +118,7 @@ export class Address extends React.Component {
                         label="Number"
                         name="number"
                         value={this.state.newAddress.number}
+                        onChange={this.props.controlFunc}
                         controlFunc={this.handleChange}
                         maxLength={10}
                         errorMessage="Please enter your street number"
@@ -130,6 +131,7 @@ export class Address extends React.Component {
                         label="Street"
                         name="street"
                         value={this.state.newAddress.street}
+                        onChange={this.props.controlFunc}
                         controlFunc={this.handleChange}
                         maxLength={80}
                         errorMessage="Please enter your street name"
@@ -142,6 +144,7 @@ export class Address extends React.Component {
                         label="Suburb"
                         name="suburb"
                         value={this.state.newAddress.suburb}
+                        onChange={this.props.controlFunc}
                         controlFunc={this.handleChange}
                         maxLength={80}
                         errorMessage="Please enter your Suburb"
@@ -179,6 +182,7 @@ export class Address extends React.Component {
                         label="Postcode"
                         name="postCode"
                         value={this.state.newAddress.postCode}
+                        onChange={this.props.controlFunc}
                         controlFunc={this.handleChange}
                         maxLength={20}
                         errorMessage="Please enter your Postcode"

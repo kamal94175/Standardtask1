@@ -4,12 +4,13 @@ using System.Text;
 
 namespace Talent.Common.Models
 {
+    //[BsonIgnoreExtraElements]
     public class SearchCompanyModel
     {
         public string Name { get; set; }//company name
         public Location Location { get; set; }
     }
-
+    //[BsonIgnoreExtraElements]
     public class SearchJobModel
     {
         public string Name { get; set; }//Job title
@@ -17,7 +18,7 @@ namespace Talent.Common.Models
         public JobCategory Category { get; set; }
         public string Position { get; set; }//search title/description/summary
     }
-
+    //[BsonIgnoreExtraElements]
     public class SearchTalentModel
     {
         public Location Location {get;set;}

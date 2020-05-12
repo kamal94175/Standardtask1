@@ -11,19 +11,18 @@ export default class Skill extends React.Component {
             showAddSection: false,
             index: -1,
             skills: {
-                id: "",
+                //id: "",
                 name: "",
                 level: ""
             },
-            Id: "",
-            Name: "",
-            Level: ""
+            //Id: "",
+            Name: '',
+            Level: ''
         }
         this.AddSkill = this.AddSkill.bind(this)
         this.cancel = this.cancel.bind(this)
         this.editSkill = this.editSkill.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleEditChange = this.handleEditChange.bind(this)
         this.saveAdd = this.saveAdd.bind(this)
         this.saveEdit = this.saveEdit.bind(this)
         this.delete = this.delete.bind(this)
@@ -42,26 +41,29 @@ export default class Skill extends React.Component {
     }
     editSkill(index) {
         var oldskills = Object.assign([], this.props.skillData)
-        var id = oldskills[index].id;
         var name = oldskills[index].name;
         var level = oldskills[index].level;
 
         this.setState({
             index: index,
-            Id : id,
             Name: name,
             Level: level
 
         });
     }
 
-
     cancel() {
         this.setState({
             showAddSection: false,
-            index: -1
+            //index: -1
         });
     }
+
+    cancelEdit() {
+        this.setState({
+            index: -1
+        })
+    };
 
 
 
@@ -73,49 +75,66 @@ export default class Skill extends React.Component {
         })
     }
 
-    handleEditChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
+    handleNameChange(event) {
         this.setState({
-            [name]: value
+            Name: event.target.value
+        });
+    }
+
+    handleLevelChange(event) {
+        this.setState({
+            Level: event.target.value
         });
     }
 
     saveAdd() {
-        //console.log(this.state.skills)
+        var skillData = Object.assign([], this.props.skillData)
+        var newSkills = Object.assign({}, this.state.skills)
+        if (newSkills.name == "" || newSkills.level == "") {
 
-        const skillData = this.props.skillData;
-
-        this.props.skillData.push(this.state.skills);
-
-        var updateData = {
-            skills: skillData
+            TalentUtil.notification.show("Profile did not update successfully", "error", null, null)
+            this.cancel()
         }
-        this.props.updateProfileData(updateData)
-        this.cancel()
+        else {
+            skillData.push(newSkills);
+
+            var updateData = {
+                skills: skillData
+            }
+            this.props.updateProfileData(updateData)
+            this.cancel()
+        }
 
     }
     saveEdit(index) {
 
         const data = Object.assign([], this.props.skillData)
-        data[index].id = this.state.Id
+       // data[index].id = this.state.Id
         data[index].name = this.state.Name
         data[index].level = this.state.Level
+        
+        if (this.state.Name == "" || this.state.Level == "") {
 
-        var updateData = {
-            skill: data
+            TalentUtil.notification.show("Profile did not update successfully", "error", null, null)
+
+            this.cancelEdit();
         }
-        console.log(updateData)
-        this.props.updateProfileData(updateData)
-        this.cancel()
+        else {
+            var updateData = {
+                skills: data
+            }
+            console.log(updateData)
+            this.props.updateProfileData(updateData)
+            this.cancelEdit();
+            
+        }
     }
 
 
 
-    delete(skillId) {
-
-        const skillData = this.props.skillData.filter(skill => skill.id !== skillId);
+    delete(skillToDelete) {
+       // e.preventDefault();
+        const skillData = this.props.skillData.filter(skill => skill.id != skillToDelete.id);
 
         var updateData = {
             skills: skillData
@@ -123,6 +142,7 @@ export default class Skill extends React.Component {
         this.props.updateProfileData(updateData)
         this.cancel()
     };
+
     renderAddForm() {
         if (this.state.showAddSection) {
             return (
@@ -130,19 +150,19 @@ export default class Skill extends React.Component {
                     <Table striped>
                         < Table.Body >
                             <Table.Row>
-                                <Table.Cell><input type="text" name="name" value={this.state.skills.name || ""} onChange={this.handleChange} placeholder="Skill" /></Table.Cell>
+                                <Table.Cell><input type="text" name="name" value={this.state.skills.name} onChange={this.handleChange} placeholder="Skill" /></Table.Cell>
                                 <Table.Cell>
-                                    <select name="level" value={this.state.skills.level || ""}
+                                    <select  value={this.state.skills.level}
                                         onChange={this.handleChange} className="ui fluid dropdown">
-                                        <option value="ExperienceLevel">ExperienceLevel</option>
+                                        <option value="">ExperienceLevel</option>
                                         <option value="Beginner">Beginner</option>
                                         <option value="Intermediate">Intermediate</option>
                                         <option value="Experienced">Experienced</option>
 
                                     </select>
                                 </Table.Cell>
-                                <Table.Cell><button type="button" className="ui teal button " onClick={this.saveAdd}>Save</button>
-                                    <button type="button" className="ui red button " onClick={this.cancel}>Cancel</button></Table.Cell>
+                                <Table.Cell><button type="button" className="ui teal button right floated" onClick={()=>this.saveAdd()}>Add</button>
+                                    <button type="button" className="ui button right floated" onClick={()=>this.cancel()}>Cancel</button></Table.Cell>
                             </Table.Row>
                         </Table.Body >
                     </Table>
@@ -155,38 +175,41 @@ export default class Skill extends React.Component {
     render() {
         const editname = (
             <input type="text" name="Name" value={this.state.Name}
-                onChange={this.handleEditChange} placeholder="Skill" />)
+                onChange={(event) => this.handleNameChange(event)} placeholder="Skill" />)
 
         const editlevel = (
-            <select name="level" value={this.state.Level}
-                onChange={this.handleEditChange} className="ui fluid dropdown">
-                <option value="ExperienceLevel">ExperienceLevel</option>
+            <select name="Level" value={this.state.Level}
+                onChange={(event) => this.handleLevelChange(event)} className="ui fluid dropdown">
+                <option value="">ExperienceLevel</option>
                 <option value="Beginner">Beginner</option>
                 <option value="Intermediate">Intermediate</option>
                 <option value="Experienced">Experienced</option>
             </select>)
 
-        const editbutton = index => (<button type="button" className="ui teal button "
+        const editbutton = index => (<button type="button" className="ui blue basic button"
             onClick={() => this.saveEdit(index)}>Save
-                                     </button>)
-
-        const cancelbutton = (<button type="button" className="ui red button "
-            onClick={this.cancel}>Cancel
         </button>)
-        //const skillId = this.state.skills.id;
+
+        const updateBtn = index => (<i className="pencil alternate icon" onClick={() => this.editSkill(index)}>
+        </i>)
+
+        const cancelbutton = (<button type="button" className="ui red basic button"
+            onClick={() =>this.cancelEdit()}>Cancel
+        </button>)
+        const deleteButton = skill => (<i className="close icon" onClick={() => this.delete(skill)}></i>);
 
         return (
 
-            <Container className="table-margin">
+            <Container style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                 {this.renderAddForm()}
                 <React.Fragment>
-                    <Table striped>
+                    <Table striped className="ui sixteen wide column">
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>Skill</Table.HeaderCell>
                                 <Table.HeaderCell>Level</Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    <button type="button" className="ui secondary button" onClick={this.AddSkill}>
+                                    <button type="button" className="ui teal button right floated" onClick={this.AddSkill}>
                                         <i className="plus icon"></i>AddNew
                                     </button>
                                 </Table.HeaderCell>
@@ -200,10 +223,9 @@ export default class Skill extends React.Component {
                                     <Table.Cell>{this.props.skillData.indexOf(lang) == this.state.index ? editlevel : lang.level}</Table.Cell>
                                     <Table.Cell>
                                         {this.props.skillData.indexOf(lang) == this.state.index ? editbutton(this.props.skillData.indexOf(lang)) :
-                                            <i className="pencil alternate icon" onClick={() => this.editSkill(this.props.skillData.indexOf(lang))}>
-                                            </i>}
+                                            updateBtn(this.props.skillData.indexOf(lang))}
                                         {this.props.skillData.indexOf(lang) == this.state.index ? cancelbutton :
-                                            <i className="close icon" onClick={(e) => this.delete(lang.id)}></i>}
+                                            deleteButton(lang)}
                                     </Table.Cell>
                                 </Table.Row>
                             ))}

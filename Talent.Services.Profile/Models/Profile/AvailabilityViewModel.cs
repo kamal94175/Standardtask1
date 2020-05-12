@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Talent.Services.Profile.Models.Profile
 {
+    //[BsonIgnoreExtraElements]
     public class AvailabilityViewModel
     {
         [Required]

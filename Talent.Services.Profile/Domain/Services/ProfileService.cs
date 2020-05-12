@@ -143,6 +143,7 @@ namespace Talent.Services.Profile.Domain.Services
                         UserLanguage language = existingTalent.Languages.SingleOrDefault(x => x.Id == item.Id);
                         if (language == null)
                         {
+                            
                             language = new UserLanguage
                             {
                                 Id = ObjectId.GenerateNewId().ToString(),
@@ -185,7 +186,8 @@ namespace Talent.Services.Profile.Domain.Services
                             experience = new UserExperience
                             {
                                 Id = ObjectId.GenerateNewId().ToString(),
-
+                                UserId = model.Id,
+                                IsDeleted = false
                             };
                         }
                         UpdateExperienceFromView(item, experience);
@@ -533,6 +535,7 @@ namespace Talent.Services.Profile.Domain.Services
                 Level = language.LanguageLevel,
                 Name = language.Language
             };
+        
         }
         protected ExperienceViewModel ViewModelFromExperience(UserExperience experience)
         {

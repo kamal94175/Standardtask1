@@ -7,9 +7,10 @@ using System.Text;
 
 namespace Talent.Common.Models
 {
+    [BsonIgnoreExtraElements]
     public class UserAvailability: IMongoCommon
     {
-        public Guid UId { get; set; }
+       // public Guid UId { get; set; }
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }

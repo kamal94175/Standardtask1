@@ -1,233 +1,258 @@
-﻿/* Language section */
-import React from 'react';
+﻿import React from 'react';
 import Cookies from 'js-cookie';
-import { Container, Table, Button, Icons } from "semantic-ui-react";
+import { Table, Container, Form } from "semantic-ui-react";
+
+
 export default class Language extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isLoaded: false,
-            indexToEdit: -1,
             showAddSection: false,
 
-            languages: [{
-                id: '',
-                name: '',
-                level: ''
-            }],
-            Id: "",
-            Name: "",
-            Level: ""
-        }
+            languages: {
+                id:  "",
+                name: "",
+                level: "",
+                
 
-        this.AddLanguage = this.AddLanguage.bind(this)
-        this.cancel = this.cancel.bind(this)
-        this.editLanguage = this.editLanguage.bind(this)
-        this.delete = this.delete.bind(this)
+            },
+            indexToEdit: -1,
+            Level: '',
+            Name: '',
+
+        };
+        this.openAdd = this.openAdd.bind(this)
+        this.closeAdd = this.closeAdd.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleEditChange = this.handleEditChange.bind(this)
-        this.saveAdd = this.saveAdd.bind(this)
-        this.saveEdit = this.saveEdit.bind(this)
-        this.renderAddForm = this.renderAddForm.bind(this)
-
-    }
-    componentDidMount() {
-
-    }
-    AddLanguage(e) {
-        e.preventDefault();
-        this.setState({
-            showAddSection: true,
-            languages: {}
-
-        })
+        this.saveContact = this.saveContact.bind(this)
+        this.handleNameChange = this.handleNameChange.bind(this)
+        this.handleLevelChange = this.handleLevelChange.bind(this)
+        //this.renderAdd = this.renderAdd.bind(this)
     }
 
-    editLanguage(index) {
+
+    editComponent(index) {
         var oldlanguages = Object.assign([], this.props.languageData)
         var name = oldlanguages[index].name;
         var level = oldlanguages[index].level;
-
         this.setState({
-            indexToEdit: index,
             Name: name,
-            Level: level
-
+            Level: level,
+            indexToEdit: index
         });
     }
 
-    cancel() {
+    cancelEdit() {
+        this.setState({
+            indexToEdit: -1
+        })
+    };
+
+    updateLanguage(index) {
+        console.log("updateComponent", index)
+        var oldlanguages = Object.assign([], this.props.languageData)
+        oldlanguages[index].name = this.state.Name;
+        oldlanguages[index].level = this.state.Level;
+        if (this.state.Name == "" || this.state.Level == "") {
+
+            TalentUtil.notification.show("Profile did not update successfully", "error", null, null)
+       
+            this.cancelEdit();
+
+        }
+        else {
+            console.log("newlanguage", oldlanguages)
+            var updateLanguage = {
+                languages: oldlanguages
+            }
+            this.props.updateProfileData(updateLanguage)
+            this.setState({
+                indexToEdit: -1
+            })
+        }
+
+    };
+
+    openAdd() {
+        const languageData = Object.assign({}, this.props.languageData)
+        console.log("languageData", languageData);
+        this.setState({
+            showAddSection: true,
+        })
+    }
+
+    closeAdd() {
         this.setState({
             showAddSection: false,
-            indexToEdit: -1
-        });
+        })
     }
 
     handleChange(event) {
-
         const data = Object.assign({}, this.state.languages)
         data[event.target.name] = event.target.value
         this.setState({
             languages: data
-        });
+        })
     }
 
-    handleEditChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
+    handleNameChange(event) {
         this.setState({
-            [name]: value
+            Name: event.target.value
         });
     }
 
-    saveAdd(e) {
-        e.preventDefault();
+    handleLevelChange(event) {
+        this.setState({
+            Level: event.target.value
+        });
+    }
+
+    saveContact() {
         console.log(this.state.languages)
+        var oldlanguages = Object.assign([], this.props.languageData)
+        var newlanguage = Object.assign({}, this.state.languages)
+        if (newlanguage.name == "" || newlanguage.level == "") {
 
-        const languageData = this.props.languageData;
-
-        this.props.languageData.push(this.state.languages);
-
-        var updateData = {
-            languages: languageData
+            TalentUtil.notification.show("Profile did not update successfully", "error", null, null)
+            this.closeAdd();
         }
-        this.props.updateProfileData(updateData)
-        this.cancel()
 
-    }
-    saveEdit(index) {
-
-        const data = Object.assign([], this.props.languageData)
-        data[index].id= this.state.Id
-        data[index].name = this.state.Name
-        data[index].level = this.state.Level
-
-        var updateData = {
-            language: data
-        }
-        console.log(updateData)
-        this.props.updateProfileData(updateData)
-        this.cancel()
-    }
-
-
-
-    delete(languageToDelete) {
-
-        const languageData = this.props.languageData.filter(language => language.id != languageToDelete.id);
-
-        var updateData = {
-            languages: languageData
-        }
-        this.props.updateProfileData(updateData)
-        console.log(updateData)
-        this.cancel()
-    };
-
-
-    renderAddForm() {
-        if (this.state.showAddSection) {
-            return (
-                <React.Fragment>
-                    <Table striped>
-                        <Table.Body>
-                            <Table.Row>
-                                <Table.Cell><input type="text" name="name" value={this.state.languages.name || ""}
-                                    onChange={this.handleChange} placeholder="Language" />
-                                </Table.Cell>
-
-                                <Table.Cell>
-                                    <select name="level" value={this.state.languages.level || ""}
-                                        onChange={this.handleChange} className="ui fluid dropdown">
-                                        <option value="languageLevel">languageLevel</option>
-                                        <option value="Basic">Basic</option>
-                                        <option value="Conversational">Conversational</option>
-                                        <option value="Fluent">Fluent</option>
-                                        <option value="Native">Native</option>
-                                    </select>
-                                </Table.Cell>
-
-                                <Table.Cell>
-                                    <button type="button" className="ui teal button" onClick={this.saveAdd}>Save</button>
-                                    <button type="button" className="ui red button" onClick={this.cancel}>Cancel</button>
-                                </Table.Cell>
-                            </Table.Row>
-                        </Table.Body>
-                    </Table>
-
-                </React.Fragment>
-            )
-        } else {
-            return null
+        else {
+            oldlanguages.push(newlanguage );
+            var updateLanguage = {
+                languages: oldlanguages
+            }
+            this.props.updateProfileData(updateLanguage)
+            this.closeAdd();
         }
     }
 
+    DeleteLanguage(languageToDelete) {
+        const updatedlanguage = this.props.languageData.filter(language => language.id != languageToDelete.id);
+        var updateLanguage = {
+            languages: updatedlanguage
+        }
+        this.props.updateProfileData(updateLanguage)
 
+    }
+
+    
 
     render() {
-        const editname = (
-            <input type="text" name="Name" value={this.state.Name}
-                onChange={this.handleEditChange} placeholder="Language" />)
+        let { indexToEdit } = this.state;
+        let deleteBtn = language => (
+            <i className="delete icon" onClick={() => this.DeleteLanguage(language)}>
 
-        const editlevel = (
-            <select name="Level" value={this.state.Level}
-                onChange={this.handleEditChange} className="ui fluid dropdown">
-                <option value="LanguageLevel">languageLevel</option>
-                <option value="Basic">Basic</option>
-                <option value="Conversational">Conversational</option>
-                <option value="Fluent">Fluent</option>
-                <option value="Native">Native</option>
+            </i>
+        );
 
-            </select>)
+        let editBtn = index => (
+            <i className="pencil icon" onClick={() => this.editComponent(index)}>
 
-        const editbutton = index => (<button type="button" className="ui teal button "
-            onClick={() => this.saveEdit(index)}>Save
-        </button>)
+            </i>
+        );
+        let updateBtn = index => (
+            <button type="button" className="ui blue basic button" onClick={() => this.updateLanguage(index)}>
+                Update
+            </button>
+        );
+        let cancelBtn = (
+            <button type="button" className="ui red basic button" onClick={() => this.cancelEdit()}>
+                Cancel
+            </button>
+        );
+        let editlevel = (
 
-        const cancelbutton = (<button type="button" className="ui red button "
-            onClick={this.cancel}>Cancel
-        </button>)
-        const deletebutton = language => (<i className="close icon" onClick={() => this.delete(language)}></i>);
+            <div>
+                <select className="ui fluid" name="Level"
+                    onChange={(event) => this.handleLevelChange(event)}
+                    value={this.state.Level} >
+                    <option value="">Select Level</option>
+                    <option value="Basic">Basic</option>
+                    <option value="Conversational">Conversational</option>
+                    <option value="Fluent">Fluent</option>
+                    <option value="Native">Native</option>
+                </select></div>
+        );
+        let editname =  (<div>
 
+            <input className="ui fluid" type="text" name="Name" value={this.state.Name}
+                onChange={(event) => this.handleNameChange(event)}
+                placeholder="Add Language" /></div>
+        );
         return (
-
-            <Container className="table-margin">
-                {this.renderAddForm()}
+            <Container style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                 <React.Fragment>
-                    <Table striped>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Language</Table.HeaderCell>
-                                <Table.HeaderCell>Level</Table.HeaderCell>
-                                <Table.HeaderCell>
-                                    <button type="button" className="ui secondary button" onClick={this.AddLanguage}>
-                                        <i className="plus icon"></i>AddNew
-                                    </button>
-                                </Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
+                    <div>
 
-                        <Table.Body className="helo">
-                            {this.props.languageData.map((lang, index) => (
-                                <Table.Row key={index}>
-                                    <Table.Cell>{this.props.languageData.indexOf(lang) == this.state.indexToEdit ? editname : lang.name}</Table.Cell>
-                                    <Table.Cell>{this.props.languageData.indexOf(lang) == this.state.indexToEdit ? editlevel : lang.level}</Table.Cell>
-                                    <Table.Cell>
-                                        {this.props.languageData.indexOf(lang) == this.state.indexToEdit ? editbutton(this.props.languageData.indexOf(lang)) :
-                                            <i className="pencil alternate icon" onClick={() => this.editLanguage(this.props.languageData.indexOf(lang))}>
-                                            </i>}
-                                        {this.props.languageData.indexOf(lang) == this.state.indexToEdit ? cancelbutton :
-                                           deletebutton(lang) }
-                                    </Table.Cell>
-                                </Table.Row>
-                            ))}
-                        </Table.Body>
-                    </Table>
+                        {
+                            this.state.showAddSection ?
+                                <div style={{ paddingBottom: '20px' }}>
+                                    <div className="inline field">
+                                        <input className="six wide field" type="text" name="name" value={this.state.languages.name}
+                                            onChange={this.handleChange} placeholder="Add Language" id="languages" />
+
+                                        <select className="six wide field" name="level"
+                                            onChange={this.handleChange} value={this.state.languages.level} >
+                                            <option value="" >Select Level</option>
+                                            <option value="Basic" >Basic</option>
+                                            <option value="Conversational">Conversational</option>
+                                            <option value="Fluent">Fluent</option>
+                                            <option value="Native">Native</option>
+                                        </select>
+
+                                        <button type="button" className="ui button right floated" onClick={this.closeAdd}>Cancel</button>
+                                        <button type="button" className="ui teal button right floated" onClick={this.saveContact}>Add</button>
+                                    </div></div>
+                                : null
+                        }
+
+                        <div className="ui sixteen wide column">
+
+                            <Table>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell>Language</Table.HeaderCell>
+                                        <Table.HeaderCell>Level</Table.HeaderCell>
+                                        <Table.HeaderCell><button type="button" className="ui teal button right floated" onClick={this.openAdd}><i className="plus icon"></i>AddNew</button></Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {this.props.languageData.map((lang, index) => {
+                                        return (
+                                            <Table.Row key={index}>
+                                                <Table.Cell className="six wide field">
+                                                    {this.props.languageData.indexOf(lang) === indexToEdit ? editname : lang.name}
+                                                </Table.Cell>
+                                                <Table.Cell className="six wide field">
+                                                    {this.props.languageData.indexOf(lang) === indexToEdit
+                                                        ? editlevel
+                                                        : lang.level}
+                                                </Table.Cell>
+                                                <Table.Cell className="right aligned">
+                                                    {this.props.languageData.indexOf(lang) === indexToEdit
+                                                        ? updateBtn(this.props.languageData.indexOf(lang))
+                                                        : editBtn(this.props.languageData.indexOf(lang))}
+                                                    {this.props.languageData.indexOf(lang) === indexToEdit
+                                                        ? cancelBtn
+                                                        : deleteBtn(lang)}
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        );
+                                    })}
+                                </Table.Body>
+                            </Table>
+
+
+                        </div>
+                    </div>
+
+
+
                 </React.Fragment>
-            </Container >
-        )
+
+            </Container>
+        );
     }
 }
-

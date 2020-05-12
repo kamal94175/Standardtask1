@@ -6,11 +6,13 @@ using System.Collections.Generic;
 
 namespace Talent.Common.Models
 {
+    //[BsonIgnoreExtraElements]
     public enum JobStatus
     {
         Active, Closed
     }
-    
+    [BsonIgnoreExtraElements]
+
     public class Job:IMongoCommon
     {
         [BsonId]

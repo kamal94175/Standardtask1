@@ -6,6 +6,7 @@ using Talent.Common.Models;
 
 namespace Talent.Services.Profile.Models.Profile
 {
+    //[BsonIgnoreExtraElements]
     public class EmployerProfileViewModel
     {
         public string Id { get; set; }

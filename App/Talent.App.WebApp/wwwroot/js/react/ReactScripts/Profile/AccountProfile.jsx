@@ -61,7 +61,7 @@ export default class AccountProfile extends React.Component {
     componentDidMount() {
         this.loadData();
     }
-    loadData() {
+    debugger; loadData() {
         var cookies = Cookies.get('talentAuthToken');
         $.ajax({
             url: 'http://localhost:60290/Profile/Profile/getTalentProfile',

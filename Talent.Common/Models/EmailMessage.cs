@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Talent.Common.Models
 {
+    //[BsonIgnoreExtraElements]
     public class EmailMessage
     {
         public string Destination { get; set; }
