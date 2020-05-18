@@ -21,12 +21,13 @@ export default class SelfIntroduction extends React.Component {
         const data = Object.assign({}, this.state.item.summary)
         data[event.target.name] = event.target.value;
         this.setState({
-            item:data
+            item: data
         })
         this.props.updateWithoutSave(data)
     }
     handleChangeDescription(event) {
-        const data = Object.assign({}, this.state.item.description)
+
+        const data = Object.assign({}, this.state.item.Description)
         data[event.target.name] = event.target.value;
         this.setState({
             item: data
@@ -38,14 +39,13 @@ export default class SelfIntroduction extends React.Component {
         console.log(this.state.item)
         const data = Object.assign({}, this.state.item)
         //const { description } = this.state.item;
-
-        if (this.state.item.description.length < 150) {
+        
+        if ( this.state.item.description && this.state.item.description.length < 150) {
             TalentUtil.notification.show("Profile did not update successfully", "error", null, null)
         } else {
             //data[event.target.name] = event.target.value;
             this.props.updateProfileData(data)
         }
-        
     }
 
     render() {

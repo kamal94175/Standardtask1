@@ -37,4 +37,10 @@
     <ProjectReference Include="..\Talent.Common\Talent.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="profile.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

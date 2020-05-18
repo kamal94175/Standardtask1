@@ -1,0 +1,64 @@
+{
+  "manifestVersion": 1,
+  "iisConfig": {
+    "appPools": [
+      {
+        "name": "appPool1",
+        "recycling": {
+          "regularTimeInterval": 10
+        }
+      },
+      {
+        "name": "appPool2",
+        "recycling": {
+          "regularTimeInterval": 30
+        }
+      },
+      {
+        "name": "appPool3",
+        "recycling": {
+          "regularTimeInterval": 30
+        }
+      },
+      {
+        "name": "appPool4",
+        "recycling": {
+          "regularTimeInterval": 30
+        }
+      }
+    ]
+  },
+  "deployments": {
+
+    "aspNetCoreWeb": [
+      {
+        "name": "Talent.App.WebApp",
+        "parameters": {
+          "appBundle": "./Talent.App.Identity.zip",
+          "iisPath": "/Talent.App.WebApp"
+        }
+      },
+      {
+        "name": "Talent.Services.Identity",
+        "parameters": {
+          "appBundle": "./Talent.Services.Identity.zip",
+          "iisPath": "/Talent.Services.Identity"
+        }
+      },
+      {
+        "name": "Talent.Services.Profile",
+        "parameters": {
+          "appBundle": "./Talent.Services.Identity.zip",
+          "iisPath": "/Talent.Services.Profile"
+        }
+      },
+      {
+        "name": "Talent.Services.Talent",
+        "parameters": {
+          "appBundle": "./Talent.Services.Identity.zip",
+          "iisPath": "/Talent.Services.Talent"
+        }
+      }
+    ]
+  }
+}

@@ -1,4 +1,5 @@
-﻿import React, { Component } from 'react';
+﻿/* Photo upload section */
+import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 
 export default class PhotoUpload extends Component {
@@ -65,7 +66,7 @@ export default class PhotoUpload extends Component {
             this.setState({
                 ProfilePhoto: file,
                 ProfilePhotoUrl: reader.result,
-                //showUpload: true
+                showUpload: true
             });
         }
 
@@ -73,51 +74,53 @@ export default class PhotoUpload extends Component {
         if (file == "") {
             document.getElementById('showhide').style.display = 'none';
         } else {
-            document.getElementById('showhide').style.display = 'inline';   
+            document.getElementById('showhide').style.display = 'inline';
         }
 
     }
     renderImage() {
         let { ProfilePhotoUrl } = this.state;
-        ProfilePhotoUrl = this.props.imageId;
-        if (ProfilePhotoUrl == null) {
-            return (
-                <div className="ui container">
-                    <div className="margin-top">
-                        <label className="upload-btn" >
-                            <input type="file"
-                                className="inputfile hidden"
-                                name="file"
-                                accept="image/*" //this will only accept the images not other files
-                                onChange={this.handleImageChange}
-                                id="embedpollfileinput" />
-
-                            <i className="camera retro icon"></i>
-                        </label>
-                    </div>
-                </div>)
+        let ProfilePhoto = null;
+        if (ProfilePhotoUrl) {
+            ProfilePhoto = (<img className="ui small bordered circular image" src={ProfilePhotoUrl} />);
         } else {
-            return (<div className="image-preview">
-                <label className="upload-btn2" >
-                    <input type="file"
-                        className="inputfile hidden"
-                        name="file"
-                        accept="image/*" //this will only accept the images not other files
-                        onChange={this.handleImageChange}
-                        id="fileinput" />
-
-                    {<img className="ProfilePhoto" src={this.props.imageId} />}
-                </label>
-            </div>)
-
+            ProfilePhoto = (<div className="previewText">Please select an Image for Preview</div>);
         }
 
+        return (
+            <div className="image">
+                {this.state.showUpload ?
+
+                    <div className="showupload">
+                        {ProfilePhoto}
+
+                    </div>
+
+                    :
+                    <div className="ui container">
+                        <div className="margin-top">
+                            <label className="upload-btn" >
+                                <input type="file"
+                                    className="inputfile hidden"
+                                    name="file"
+                                    accept="image/*" //this will only accept the images not other files
+                                    onChange={this.handleImageChange}
+                                    id="embedpollfileinput" />
+
+                                <i className="camera retro icon"></i>
+                            </label>
+                        </div>
+                    </div>
+                }
+            </div>
+        )
     }
 
     render() {
+        let ProfilePhoto = this.props.imageId;
         return (
-            <div>
-                {this.renderImage()}
+            <div className="image-preview">
+                {ProfilePhoto = null ? this.renderImage() : <img className="image" src={ProfilePhoto} />}
 
                 <button className="submitButton"
                     id="showhide"

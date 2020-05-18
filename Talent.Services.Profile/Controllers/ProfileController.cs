@@ -484,7 +484,7 @@ namespace Talent.Services.Profile.Controllers
                 //                Level = "Junior",
                 //                Name = "Dummy User...",
                 //                PhotoId = "",
-                //                Skills = new List<string> { "C#", ".Net Core", "Javascript", "ReactJS", "PreactJS" },
+                  //              Skills = new List<string> { "C#", ".Net Core", "Javascript", "ReactJS", "PreactJS" },
                 //                Summary = "Veronika Ossi is a set designer living in New York who enjoys kittens, music, and partying.",
                 //                Visa = "Citizen"
                 //            }
